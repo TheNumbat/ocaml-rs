@@ -249,7 +249,7 @@ pub fn ocaml_func(attribute: TokenStream, item: TokenStream) -> TokenStream {
                 #(#convert_params);*
                 let res = inner(#gc_name, #param_names);
                 #[allow(unused_unsafe)]
-                let mut gc_ = unsafe { ocaml::Runtime::recover_handle() };
+                let mut gc_ = unsafe { ocaml::Runtime::recover_handle_mut() };
                 unsafe { ocaml::ToValue::to_value(&res, &gc_).raw() }
             })
         }
@@ -454,7 +454,7 @@ fn ocaml_bytecode_func_impl(
                     #[inline(always)]
                     #constness #unsafety fn inner(#(#rust_args),*) -> #rust_return_type {
                         #[allow(unused_variables)]
-                        let #gc_name = unsafe { ocaml::Runtime::recover_handle() };
+                        let mut #gc_name = unsafe { ocaml::Runtime::recover_handle_mut() };
                         #use_gc
                         #body
                     }
@@ -464,7 +464,7 @@ fn ocaml_bytecode_func_impl(
                     #[inline(always)]
                     #constness #unsafety fn inner(#(#rust_args),*)  {
                         #[allow(unused_variables)]
-                        let #gc_name = unsafe { ocaml::Runtime::recover_handle() };
+                        let mut #gc_name = unsafe { ocaml::Runtime::recover_handle_mut() };
                         #use_gc
                         #body
                     }
@@ -500,7 +500,7 @@ fn ocaml_bytecode_func_impl(
             pub #constness unsafe extern "C" fn #name(__ocaml_argv: *mut ocaml::Raw, __ocaml_argc: i32) -> ocaml::Raw #where_clause {
                 assert!(#len <= __ocaml_argc as usize, "len: {}, argc: {}", #len, __ocaml_argc);
 
-                let #gc_name = unsafe { ocaml::Runtime::recover_handle() };
+                let mut #gc_name = unsafe { ocaml::Runtime::recover_handle_mut() };
 
                 #inner
 
@@ -528,7 +528,7 @@ fn ocaml_bytecode_func_impl(
             )*
             pub #constness #unsafety extern "C" fn #name(#(#ocaml_args),*) -> ocaml::Raw #where_clause {
                 #[allow(unused_variables)]
-                let #gc_name = unsafe { ocaml::Runtime::recover_handle() };
+                let mut #gc_name = unsafe { ocaml::Runtime::recover_handle_mut() };
 
                 #inner
 

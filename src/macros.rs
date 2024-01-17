@@ -53,7 +53,7 @@ pub fn initial_setup() {
 #[macro_export]
 macro_rules! body {
     ($gc:ident: $code:block) => {{
-        let $gc = unsafe { $crate::Runtime::recover_handle() };
+        let mut $gc = unsafe { $crate::Runtime::recover_handle_mut() };
 
         // Ensure panic handler is initialized
         $crate::initial_setup();
@@ -134,7 +134,7 @@ macro_rules! import {
 /// ```
 macro_rules! function {
     ($x:expr, ($($argname:ident: $arg:ty),*) -> $r:ty) => {
-        |gc: &$crate::Runtime, $($argname: &$arg),*| -> Result<$r, $crate::Error> {
+        |gc: &mut $crate::Runtime, $($argname: &$arg),*| -> Result<$r, $crate::Error> {
             let args = [$($crate::ToValue::to_value($argname, gc)),*];
             #[allow(unused_unsafe)]
             unsafe { $crate::Value::call(&$x, gc, args) }
