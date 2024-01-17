@@ -14,7 +14,7 @@ edition = "2021"
 features = [ "without-ocamlopt", "derive", "link" ]
 
 [dependencies]
-ocaml-interop = { git = "https://github.com/tizoc/ocaml-interop", branch="boxroot030" }
+ocaml-interop = { git = "https://github.com/TheNumbat/ocaml-interop", branch="boxroot030" }
 ocaml-sys = {path = "./sys", version = ">=0.23"}
 ocaml-boxroot-sys = { git = "https://github.com/TheNumbat/ocaml-boxroot", rev = "652d92b" }
 ocaml-derive = {path = "./derive", optional = true, version = "^1.0.0-beta.5"}
