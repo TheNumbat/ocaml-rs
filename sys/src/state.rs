@@ -142,34 +142,34 @@ pub struct caml_domain_state {
 
 extern "C" {
     #[doc(hidden)]
-    #[cfg(ocaml5)]
+    #[cfg(not(ocaml5))]
     pub static mut Caml_state: *mut caml_domain_state;
 
     #[doc(hidden)]
-    #[cfg(not(ocaml5))]
+    #[cfg(ocaml5)]
     pub static mut caml_state: *mut caml_domain_state;
 }
 
 #[doc(hidden)]
-#[cfg(ocaml5)]
+#[cfg(not(ocaml5))]
 pub unsafe fn local_roots() -> *mut crate::memory::CamlRootsBlock {
     (*Caml_state)._local_roots
 }
 
 #[doc(hidden)]
-#[cfg(not(ocaml5))]
+#[cfg(ocaml5)]
 pub unsafe fn local_roots() -> *mut crate::memory::CamlRootsBlock {
     (*caml_state)._local_roots
 }
 
 #[doc(hidden)]
-#[cfg(ocaml5)]
+#[cfg(not(ocaml5))]
 pub unsafe fn set_local_roots(x: *mut crate::memory::CamlRootsBlock) {
     (*Caml_state)._local_roots = x
 }
 
 #[doc(hidden)]
-#[cfg(not(ocaml5))]
+#[cfg(ocaml5)]
 pub unsafe fn set_local_roots(x: *mut crate::memory::CamlRootsBlock) {
     (*caml_state)._local_roots = x
 }
