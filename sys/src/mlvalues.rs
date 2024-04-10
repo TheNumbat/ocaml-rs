@@ -58,12 +58,16 @@ pub unsafe fn tag_val(val: Value) -> Tag {
 
 #[inline]
 pub unsafe fn hd_val(val: Value) -> Header {
+    // Note that the returned value will include mixed block header
+    // information.  This is consistent with the C macros in the runtime.
     *(val as *const Header).offset(-1)
 }
 
 #[inline]
 pub unsafe fn wosize_val(val: Value) -> Size {
-    hd_val(val) >> 10
+    // The left shift here removes the reserved header bits.
+    // The right shift here is a logical, not arithmetic shift.
+    (hd_val(val) << 8) >> 10
 }
 
 /// `(((intnat)(x) << 1) + 1)`
