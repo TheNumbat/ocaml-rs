@@ -67,7 +67,7 @@ pub unsafe fn hd_val(val: Value) -> Header {
 pub unsafe fn wosize_val(val: Value) -> Size {
     // The left shift here removes the reserved header bits.
     // The right shift here is a logical, not arithmetic shift.
-    (hd_val(val) << 8) >> 10
+    (hd_val(val) << 8) >> 18
 }
 
 /// `(((intnat)(x) << 1) + 1)`
