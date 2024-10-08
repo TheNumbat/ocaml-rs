@@ -37,6 +37,8 @@ pub type Mark = Uintnat;
 /// bits  63    10 9     8 7   0
 ///```
 ///
+/// flambda-backend: Reserved bits go between [wosize] and [color].
+/// NB: this is different from ocaml/ocaml at the moment.
 pub type Header = Uintnat;
 
 /// #ifdef ARCH_BIG_ENDIAN
@@ -65,9 +67,8 @@ pub unsafe fn hd_val(val: Value) -> Header {
 
 #[inline]
 pub unsafe fn wosize_val(val: Value) -> Size {
-    // The left shift here removes the reserved header bits.
     // The right shift here is a logical, not arithmetic shift.
-    (hd_val(val) << 8) >> 18
+    hd_val(val) >> 18
 }
 
 /// `(((intnat)(x) << 1) + 1)`
